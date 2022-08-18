@@ -1,0 +1,5 @@
+#K3s
+192.168.200.125 kgui.sandstorm.iot kgui
+192.168.200.95 kmaster.sandstorm.iot kmaster
+192.168.200.105 kworker.sandstorm.iot kworker
+192.168.200.115 kworker2.sandstorm.iot kworker2
