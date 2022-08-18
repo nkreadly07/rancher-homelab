@@ -1,61 +1,48 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: zoneminder
+  name: zoneminder-57896f5c96-qrkjz
   namespace: default
 spec:
-  selector:
-    matchLabels:
-      octopusexport: OctopusExport
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        octopusexport: OctopusExport
-    spec:
-      hostNetwork: true
-      volumes:
-        - name: zm-pvc
-          persistentVolumeClaim:
-            claimName: zm-pvc
-      containers:
-        - name: zoneminder
-          image: dlandon/zoneminder
-          ports:
-            - name: zm-port
-              containerPort: 9000
-            - name: https
-              containerPort: 8443
-              protocol: TCP
-          env:
-            - name: TZ
-              value: America/Chicago
-            - name: PUID
-              value: "99"
-            - name: PGID
-              value: "100"
-            - name: INSTALL_HOOK
-              value: "0"
-            - name: INSTALL_FACE
-              value: "0"
-            - name: NSTALL_TINY_YOLOV3
-              value: "0"
-            - name: PGID
-              value: "100"
-            - name: INSTALL_YOLOV3
-              value: "0"
-            - name: INSTALL_YOLOV4
-              value: "0"
-            - name: MULTI_PORT_START
-              value: "0"
-            - name: MULTI_PORT_END
-              value: "0"
-          volumeMounts:
-            - name: zm-pvc
-              mountPath: /config
-              subPath: ""
-            - name: zm-pvc
-              mountPath: /var/cache/zoneminder
-              subPath: ""
+  containers:
+  - env:
+    - name: TZ
+      value: America/Chicago
+    - name: PUID
+      value: "99"
+    - name: PGID
+      value: "100"
+    - name: INSTALL_HOOK
+      value: "0"
+    - name: INSTALL_FACE
+      value: "0"
+    - name: NSTALL_TINY_YOLOV3
+      value: "0"
+    - name: PGID
+      value: "100"
+    - name: INSTALL_YOLOV3
+      value: "0"
+    - name: INSTALL_YOLOV4
+      value: "0"
+    - name: MULTI_PORT_START
+      value: "0"
+    - name: MULTI_PORT_END
+      value: "0"
+    image: dlandon/zoneminder
+    imagePullPolicy: Always
+    name: zoneminder
+    ports:
+    - containerPort: 9000
+      hostPort: 9000
+      name: zm-port
+      protocol: TCP
+    - containerPort: 8443
+      hostPort: 8443
+      name: https
+      protocol: TCP
+    resources:
+      limits:
+        memory: 10000Mi
+      requests:
+        cpu: "1"
+        memory: 6000Mi
