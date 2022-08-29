@@ -42,11 +42,11 @@ ports:
   web:
     # (optional) Permanent Redirect to HTTPS
     redirectTo: websecure
-  websecure:
-    tls:
-      enabled: true
-      # (optional) Set a Default CertResolver
-      certResolver: cloudflare
+    websecure:
+      tls:
+        enabled: true
+        # (optional) Set a Default CertResolver
+        certResolver: cloudflare
 
 env:
   # Set your environment variables here...
@@ -65,7 +65,7 @@ env:
         key: apiKey
         name: cloudflare-credentials
 
-# Disable Da;shboard
+# Disable Dashboard
 ingressRoute:
   dashboard:
     enabled: false
@@ -92,28 +92,3 @@ deployment:
 ingressClass:
   enabled: true
   isDefaultClass: true
-
-service:
-  enabled: true
-  type: LoadBalancer
-  # Additional annotations applied to both TCP and UDP services (e.g. for cloud provider specific config)
-  annotations: {}
-  # Additional annotations for TCP service only
-  annotationsTCP: {}
-  # Additional annotations for UDP service only
-  annotationsUDP: {}
-  # Additional service labels (e.g. for filtering Service by custom labels)
-  labels: {}
-  # Additional entries here will be added to the service spec.
-  # Cannot contain type, selector or ports entries.
-  spec:
-    {}
-    # externalTrafficPolicy: Cluster
-    # loadBalancerIP: "1.2.3.4"
-    # clusterIP: "2.3.4.5"
-  loadBalancerSourceRanges:
-    []
-    # - 192.168.0.1/32
-    # - 172.16.0.0/16
-  externalIPs:
-    - 136.32.37.203

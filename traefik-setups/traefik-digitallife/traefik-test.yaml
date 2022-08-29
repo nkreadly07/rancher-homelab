@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx # Name of the deployment
-  namespace: zm-test # Name of the namespace
+  namespace: traefik-test # Name of the namespace
   labels:
     app: nginx # Name of your application
 spec:
@@ -15,6 +15,7 @@ spec:
       labels:
         app: nginx # Name of your application
     spec:
+      serviceAccountName: traefik-account
       containers:
         # Containers are the individual pieces of your application that you want
         # to run.
@@ -28,23 +29,20 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx
-  namespace: zm-test
+  namespace: traefik-test
 spec:
   selector:
     app: nginx
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: http
       port: 80
-      targetPort: 80
-      protocol: TCP # optional protocol
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx
-  namespace: zm-test
+  namespace: traefik-test
   annotations:
     # (Optional): Annotations for the Ingress Controller
     # ---
@@ -59,7 +57,7 @@ metadata:
     # traefik.ingress.kubernetes.io/router.middlewares:your-middleware@kubernetescrd
 spec:
   rules:
-    - host: "zm-test.roonaldo.org" # Your hostname
+    - host: "traefik-test.roonaldo.org" # Your hostname
       http:
         paths:
           # Path-based routing settings:
@@ -67,10 +65,10 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: zm-test # The name of the service
+                name: traefik # The name of the service
                 port:
-                  number: 80 # Service Portnumber
-  # tls:
-  # - hosts:
-  #   - your-hostname.com  # Your hostname
-  #   secretName: your-secret  # Your TLS Secret
+                  name: nginx # Service Portnumber
+  tls:
+    - hosts:
+        - roonaldo.org # Your hostname
+      secretName: nginx-test # Your TLS Secret
