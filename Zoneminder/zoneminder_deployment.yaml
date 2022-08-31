@@ -72,3 +72,26 @@ spec:
             limits:
               memory: 8Gi
               cpu: "2"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zomeminder-ingress
+  namespace: zoneminder
+  spec:
+  rules:
+    - host: "zm.roonaldo.org"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: zoneminder
+                port:
+                  number: 80
+
+  tls:
+    - hosts:
+        - zm.roonalo.org
+      secretName: zm-tls-secret
