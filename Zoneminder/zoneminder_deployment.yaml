@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zoneminder
-  namespace: default
+  namespace: zoneminder
 spec:
   selector:
     matchLabels:
@@ -36,39 +36,39 @@ spec:
             - name: TZ
               value: America/Chicago
             - name: PUID
-              value: '99'
+              value: "99"
             - name: PGID
-              value: '100'
+              value: "100"
             - name: INSTALL_HOOK
-              value: '0'
+              value: "0"
             - name: INSTALL_FACE
-              value: '0'
+              value: "0"
             - name: NSTALL_TINY_YOLOV3
-              value: '0'
+              value: "0"
             - name: PGID
-              value: '100'
+              value: "100"
             - name: INSTALL_YOLOV3
-              value: '0'
+              value: "0"
             - name: INSTALL_YOLOV4
-              value: '0'
+              value: "0"
             - name: MULTI_PORT_START
-              value: '0'
+              value: "0"
             - name: MULTI_PORT_END
-              value: '0'
+              value: "0"
           volumeMounts:
             - name: cache-volume
               mountPath: /dev/shm
-              subPath: ''
+              subPath: ""
             - name: zm-pvc
               mountPath: /config
-              subPath: ''
+              subPath: ""
             - name: zm-pvc
               mountPath: /var/cache/zoneminder
-              subPath: ''
+              subPath: ""
           resources:
             requests:
               memory: 4Gi
-              cpu: '1'
+              cpu: "1"
             limits:
               memory: 8Gi
-              cpu: '2'
+              cpu: "2"
