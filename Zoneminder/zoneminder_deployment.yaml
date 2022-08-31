@@ -78,7 +78,7 @@ kind: Ingress
 metadata:
   name: zomeminder-ingress
   namespace: zoneminder
-  spec:
+spec:
   rules:
     - host: "zm.roonaldo.org"
       http:
