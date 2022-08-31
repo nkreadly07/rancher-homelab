@@ -51,6 +51,8 @@ ports:
     protocol: TCP
     tls:
       enabled: true
+      serversTransport:
+      insecureSkipVerify: true
       # (optional) Set a Default CertResolver
       certResolver: cloudflare
       # domains:
@@ -60,11 +62,6 @@ ports:
       #       - pingdirectory.roonaldo.org
       #       - nginx-test.roonaldo.org
       #       - traefik.roonaldo.org
-  traefik:
-    port: 9000
-    expose: true
-    exposedPort: 9000
-    protocol: TCP
 
 env:
   # Set your environment variables here...

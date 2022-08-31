@@ -2,8 +2,23 @@ global:
   ingress:
     enabled: true
     addReleaseNameToHost: prefix
-    defaultDomain: roonaldo.org
-    defaultTlsSecret:
+    defaultDomain: pd.roonaldo.org
+    defaultTlsSecret: pd-tls-secret
+    # pd-pingdirectory-private-cert
+    # privateCert:
+    #   generate: true
+    #   format: "PKCS12"
+    #   additionalHosts:
+    #     - pingdirectory.roonaldo.org
+    #     - pingdataconsole.roonaldo.org
+    #   additionalIPs:
+    #     - 10.42.2.0
+    #     - 10.42.2.51
+    #     - 10.42.2.52
+    #     - 10.42.2.53
+    #     - 192.168.200.200
+    #     - 127.0.0.1
+
     annotations:
       traefik.ingress.kubernetes.io/backend-protocol: "HTTPS"
       kubernetes.io/ingress.class: "traefik"
@@ -47,18 +62,18 @@ pingdirectory:
       containerPort: 1443
       ingressPort: 443
       dataService: true
-  probes:
-    liveness:
-      command: /opt/liveness.sh
-      initialDelaySeconds: 1500
-      periodSeconds: 30
-      timeoutSeconds: 30
-      successThreshold: 1
-      failureThreshold: 3
-    readiness:
-      command: /opt/readiness.sh
-      initialDelaySeconds: 120
-      periodSeconds: 30
-      timeoutSeconds: 5
-      successThreshold: 2
-      failureThreshold: 2
+    probes:
+      liveness:
+        command: /opt/liveness.sh
+        initialDelaySeconds: 1500
+        periodSeconds: 30
+        timeoutSeconds: 30
+        successThreshold: 1
+        failureThreshold: 3
+      readiness:
+        command: /opt/readiness.sh
+        initialDelaySeconds: 120
+        periodSeconds: 30
+        timeoutSeconds: 120
+        successThreshold: 2
+        failureThreshold: 2

@@ -12,7 +12,7 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: acme-issuer
+  name: ssl-issuer
   # (Optional) Metadata
   # ---
   # namespace: cert-manager

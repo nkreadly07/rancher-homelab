@@ -1,0 +1,9 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: mytransport
+  namespace: traefik
+
+spec:
+  serverName: roonaldo.org
+  insecureSkipVerify: true

@@ -1,0 +1,37 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pdirecotry-server
+  namespace: pinglab
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`pingdirectory.pd.roonaldo.org`)
+      priority: 10
+      services:
+        - name: pdirecotry-server
+          port: 80
+    - kind: Rule
+      match: Host(`pingdirectory.pd.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: pdirecotry-server
+          port: 80
+          scheme: h2c
+  tls:
+    secretName: pdirectory-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pdirectory-cert
+  namespace: pinglab
+spec:
+  secretName: pdirectory-tls-secret
+  issuerRef:
+    name: ssl-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - pingdirectory.pd.roonaldo.org
