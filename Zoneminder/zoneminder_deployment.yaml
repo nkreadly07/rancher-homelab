@@ -93,5 +93,5 @@ spec:
 
   tls:
     - hosts:
-        - zm.roonalo.org
+        - zm.roonaldo.org
       secretName: zm-tls-secret
