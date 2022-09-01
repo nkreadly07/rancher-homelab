@@ -99,7 +99,7 @@ spec:
       http:
         paths:
           - pathType: Prefix
-            path: "/"
+            path: "/zm"
             backend:
               service:
                 name: zoneminder
