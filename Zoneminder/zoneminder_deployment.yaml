@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zoneminder
+  labels:
+    app: zoneminder
   namespace: zoneminder
 spec:
   selector:
@@ -13,9 +15,10 @@ spec:
   template:
     metadata:
       labels:
+        app: zoneminder
         octopusexport: OctopusExport
     spec:
-      hostNetwork: true
+      # hostNetwork: true
       volumes:
         - name: zm-pvc
           persistentVolumeClaim:
@@ -25,12 +28,13 @@ spec:
             medium: Memory
       containers:
         - name: zoneminder
-          image: dlandon/zoneminder
+          image: "dlandon/zoneminder:latest"
           ports:
             - name: zm-port
               containerPort: 9000
+              protocol: TCP
             - name: https
-              containerPort: 8443
+              containerPort: 443
               protocol: TCP
           env:
             - name: TZ
@@ -72,6 +76,7 @@ spec:
             limits:
               memory: 8Gi
               cpu: "2"
+
 ---
 apiVersion: v1
 kind: Service
@@ -84,8 +89,8 @@ spec:
 
   type: ClusterIP
   ports:
-    - name: http
-      port: 80
+    - name: https
+      port: 443
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -104,7 +109,7 @@ spec:
               service:
                 name: zoneminder
                 port:
-                  number: 80
+                  number: 443
 
   tls:
     - hosts:
