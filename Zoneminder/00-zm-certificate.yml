@@ -1,7 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: zoneminder-server
+  name: zoneminder
   namespace: zoneminder
 spec:
   entryPoints:
@@ -11,13 +11,13 @@ spec:
       match: Host(`zm.roonaldo.org`)
       priority: 10
       services:
-        - name: zoneminder-server
+        - name: zoneminder
           port: 80
     - kind: Rule
       match: Host(`zm.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
       priority: 11
       services:
-        - name: zoneminder-server
+        - name: zoneminder
           port: 80
           scheme: h2c
   tls:
