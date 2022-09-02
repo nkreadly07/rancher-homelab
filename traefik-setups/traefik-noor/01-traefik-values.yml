@@ -27,6 +27,8 @@ additionalArguments:
   - --certificatesresolvers.cloudflare.acme.email=nkreadly@gmail.com
   - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1
   - --certificatesresolvers.cloudflare.acme.storage=/ssl-certs/acme-cloudflare.json
+  - --serversTransport.insecureSkipVerify=true
+
 #
 # Generic (replace with your DNS provider):
 #  - --certificatesresolvers.generic.acme.dnschallenge.provider=generic
@@ -51,8 +53,6 @@ ports:
     protocol: TCP
     tls:
       enabled: true
-      serversTransport:
-      insecureSkipVerify: true
       # (optional) Set a Default CertResolver
       certResolver: cloudflare
       # domains:
