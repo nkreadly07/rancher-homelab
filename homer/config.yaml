@@ -133,7 +133,7 @@ services:
         subtitle: "Another application"
         tag: "app"
         url: "https://roonaldo.duckdns.org:8123/lovelace/home"
-       - name: "PiHole"
+      - name: "PiHole"
         logo: "assets/tools/sample2.png"
         subtitle: "Another application"
         tag: "app"
