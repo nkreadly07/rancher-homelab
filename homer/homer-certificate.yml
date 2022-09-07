@@ -12,13 +12,13 @@ spec:
       priority: 10
       services:
         - name: homer-server
-          port: 8443
+          port: 8080
     - kind: Rule
       match: Host(`homer.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
       priority: 11
       services:
         - name: homer-server
-          port: 8443
+          port: 8080
           scheme: h2c
   tls:
     secretName: homer-tls-secret

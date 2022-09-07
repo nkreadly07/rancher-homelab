@@ -69,8 +69,9 @@ links:
 # First level array represent a group.
 # Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
 services:
-  - name: "Applications"
-    icon: "fas fa-cloud"
+  #Kubernetes services
+  - name: "Kubernetes"
+    logo: "assets/tools/kubernetes-dashboard.png"
     items:
       - name: "K-Gui"
         logo: "assets/tools/sample.png"
@@ -89,6 +90,11 @@ services:
         subtitle: "Zoneminder system"
         tag: "kubernetes"
         url: "zm.roonaldo.org/zm"
+
+  #Home
+  - name: "Home"
+    icon: "fas fa-cloud"
+    items:
       - name: "qBittorrent Web UI"
         logo: "assets/tools/qbittorrent.png"
         subtitle: "Tor Downloader"

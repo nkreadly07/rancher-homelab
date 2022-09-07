@@ -27,9 +27,62 @@ env:
 # @default -- See values.yaml
 service:
   main:
+    # -- Enables or disables the service
+    enabled: true
+
+    # -- Make this the primary service (used in probes, notes, etc...).
+    # If there is more than 1 service, make sure that only 1 service is marked as primary.
+    primary: true
+
+    # -- Override the name suffix that is used for this service
+    nameOverride:
+
+    # -- Set the service type
+    type: ClusterIP
+
+    # -- Specify the externalTrafficPolicy for the service. Options: Cluster, Local
+    # -- [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)]
+    externalTrafficPolicy:
+
+    # -- Specify the ip policy. Options: SingleStack, PreferDualStack, RequireDualStack
+    ipFamilyPolicy:
+    # -- The ip families that should be used. Options: IPv4, IPv6
+    ipFamilies: []
+
+    # -- Provide additional annotations which may be required.
+    annotations: {}
+
+    # -- Provide additional labels which may be required.
+    labels: {}
+
+    # -- Configure the Service port information here.
+    # Additional ports can be added by adding a dictionary key similar to the 'http' service.
+    # @default -- See below
     ports:
       http:
+        # -- Enables or disables the port
+        enabled: true
+
+        # -- Make this the primary port (used in probes, notes, etc...)
+        # If there is more than 1 service, make sure that only 1 port is marked as primary.
+        primary: true
+
+        # -- The port number
         port: 8080
+
+        # -- Port protocol.
+        # Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`.
+        # HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation
+        protocol: HTTP
+
+        # -- Specify a service targetPort if you wish to differ the service port from the application port.
+        # If `targetPort` is specified, this port number is used in the container definition instead of
+        # the `port` value. Therefore named ports are not supported for this field.
+        targetPort:
+
+        # -- Specify the nodePort value for the LoadBalancer and NodePort service types.
+        # [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)
+        nodePort:
 
 ingress:
   # -- Enable and configure ingress settings for the chart under this key.
@@ -51,6 +104,11 @@ ingress:
               # -- Overrides the service port reference for this path
               port:
 
+    tls:
+      - secretName: homer-tls-secret
+        hosts:
+          - homer.roonaldo.org
+
 securityContext:
   # -- Specify the user ID the application will run as
   runAsUser: 1000
@@ -64,7 +122,27 @@ securityContext:
 persistence:
   config:
     enabled: true
+    type: pvc
     mountPath: /www/assets
+    accessMode: ReadWriteOnce
+    # -- The amount of storage that is requested for the persistent volume.
+    size: 1Gi
+    # -- Set to true to retain the PVC upon `helm uninstall`
+    retain: true
+    existingClaim: homer
+
+# -- Used in conjunction with `controller.type: statefulset` to create individual disks for each instance.
+volumeClaimTemplates: []
+# - name: data
+#   mountPath: /data
+#   accessMode: "ReadWriteOnce"
+#   size: 1Gi
+# - name: backup
+#   mountPath: /backup
+#   subPath: theSubPath
+#   accessMode: "ReadWriteOnce"
+#   size: 2Gi
+#   storageClass: cheap-storage-class
 
 configmap:
   config:
