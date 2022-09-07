@@ -43,6 +43,21 @@ logs:
 
 ports:
   # Configure your entrypoints here...
+  ldap:
+    port: 1389
+    expose: true
+    exposedPort: 389
+    protocol: TCP
+
+  ldaps:
+    port: 1636
+    expose: true
+    exposedPort: 636
+    protocol: TCP
+    tls:
+      enabled: true
+      # (optional) Set a Default CertResolver
+      certResolver: cloudflare
   web:
     # (optional) Permanent Redirect to HTTPS
     redirectTo: websecure

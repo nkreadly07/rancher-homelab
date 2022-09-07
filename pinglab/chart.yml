@@ -75,7 +75,8 @@ global:
     addReleaseNameToHost: subdomain
     defaultDomain: example.com
     defaultTlsSecret:
-    annotations: {}
+    annotations:
+      {}
       # nginx example
       # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       # kubernetes.io/ingress.class: "nginx-public"
@@ -253,9 +254,9 @@ global:
     generateGlobalRoleAndRoleBinding: false
     role:
       rules:
-      - apiGroups: [""]
-        resources: ["pods"]
-        verbs: ["get", "watch", "list"]
+        - apiGroups: [""]
+          resources: ["pods"]
+          verbs: ["get", "watch", "list"]
 
   ############################################################
   # External Images (typically for initContainers)
@@ -287,7 +288,7 @@ global:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
-          - ALL
+            - ALL
         readOnlyRootFilesystem: true
         runAsNonRoot: true
         runAsUser: 9031
@@ -301,7 +302,7 @@ global:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
-          - ALL
+            - ALL
         runAsNonRoot: true
         runAsUser: 9031
         runAsGroup: 0
@@ -354,7 +355,6 @@ global:
   #    clusterService: true
   #  clusterExternalDNSHostname:
   #  clusterServiceName:
-
 
   ############################################################
   # @section Workload values - Deployment and StatefulSet
@@ -457,7 +457,7 @@ global:
             mountPath: /opt/out
             persistentVolumeClaim:
               accessModes:
-              - ReadWriteOnce
+                - ReadWriteOnce
               storageClassName:
               resources:
                 requests:
@@ -769,7 +769,6 @@ pingfederate-admin:
   #       service: ldaps
   #       timeoutSeconds: 300
 
-
   # Example: Pulling in a secret (called pingfederate-license) into container
   #          mounting the name (license) value into a file (/opt/in/.../pingfederate.lic)
   #
@@ -806,10 +805,10 @@ pingfederate-admin:
     hosts:
       - host: pingfederate-admin._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -930,10 +929,10 @@ pingfederate-engine:
     hosts:
       - host: pingfederate-engine._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -955,8 +954,8 @@ pingdirectory:
   #
   # @param    pingdirectory.cronjob.spec yaml to insert into the created CronJob spec. The jobTemplate
   # @desc     should not be included. A schedule value must be provided
-  # 
-  # @param    pingdirectory.cronjob.jobspec 
+  #
+  # @param    pingdirectory.cronjob.jobspec
   # @desc     yaml to override default jobTemplate.
   #
   # @param    pingdirectory.cronjob.image Image to run the Jobs. The image must include kubectl
@@ -966,7 +965,8 @@ pingdirectory:
   # @default  []
   cronjob:
     enabled: false
-    spec: {}
+    spec:
+      {}
       # A schedule must be set for cronjobs.
       # Example running once every six hours:
       # schedule: "0 */6 * * *"
@@ -1063,15 +1063,14 @@ pingdirectory:
     hosts:
       - host: pingdirectory._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
           - pingdirectory._defaultDomain_
-
 
 #############################################################
 # @param    pingdirectoryproxy PingDirectoryProxy values
@@ -1116,10 +1115,10 @@ pingdirectoryproxy:
     hosts:
       - host: pingdirectoryproxy._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1166,10 +1165,10 @@ pingdelegator:
     hosts:
       - host: pingdelegator._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1215,10 +1214,10 @@ pingdatasync:
     hosts:
       - host: pingdatasync._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1261,10 +1260,10 @@ pingauthorize:
     hosts:
       - host: pingauthorize._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1305,10 +1304,10 @@ pingauthorizepap:
     hosts:
       - host: pingauthorizepap._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1351,10 +1350,10 @@ pingdatagovernance:
     hosts:
       - host: pingdatagovernance._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1394,10 +1393,10 @@ pingdatagovernancepap:
     hosts:
       - host: pingdatagovernancepap._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1451,10 +1450,10 @@ pingaccess-admin:
     hosts:
       - host: pingaccess-admin._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1496,10 +1495,10 @@ pingaccess-engine:
     hosts:
       - host: pingaccess-engine._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1537,10 +1536,10 @@ pingcentral:
     hosts:
       - host: pingcentral._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1594,10 +1593,10 @@ pingdataconsole:
     hosts:
       - host: pingdataconsole._defaultDomain_
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            serviceName: https
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: https
     tls:
       - secretName: _defaultTlsSecret_
         hosts:
@@ -1715,12 +1714,12 @@ testFramework:
     enabled: true
     role:
       rules:
-      - apiGroups:
-        - '*'
-        resources:
-        - '*'
-        verbs:
-        - '*'
+        - apiGroups:
+            - "*"
+          resources:
+            - "*"
+          verbs:
+            - "*"
 
   testConfigMaps:
     prefix: ping-devops-test-
@@ -1734,7 +1733,8 @@ testFramework:
     #   - check-pingfederate.postman-collection.json
     #   - generated.postman-environment.json
 
-  testSteps: []
+  testSteps:
+    []
     #########################################################
     # Array of steps.
     # Example includes:
@@ -1794,4 +1794,3 @@ testFramework:
     securityContext:
       runAsUser: 1000
       runAsGroup: 2000
-

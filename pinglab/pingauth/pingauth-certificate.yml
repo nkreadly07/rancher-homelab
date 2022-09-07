@@ -1,0 +1,52 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pingauth-server
+  namespace: pinglab
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`pingauthorize.pd.roonaldo.org`)
+      priority: 10
+      services:
+        - name: pingauth-argo-pingauth
+          port: 8443
+    - kind: Rule
+      match: Host(`pingauthorize.pd.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: pingauth-argo-pingauth
+          port: 8443
+          scheme: h2c
+    - kind: Rule
+      match: Host(`pingauthorizepap.pd.roonaldo.org`)
+      priority: 10
+      services:
+        - name: pingauth-argo-pingauth
+          port: 8443
+    - kind: Rule
+      match: Host(`pingauthorizepap.pd.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: pingauth-argo-pingauth
+          port: 8443
+          scheme: h2c
+
+  tls:
+    secretName: pingauth-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pingauth-cert
+  namespace: pinglab
+spec:
+  secretName: pingauth-tls-secret
+  issuerRef:
+    name: ssl-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - pingauthorize.pd.roonaldo.org
+    - pingauthorizepap.pd.roonaldo.org
