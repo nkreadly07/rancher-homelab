@@ -74,4 +74,4 @@ configmap:
     # @default -- See values.yaml
     data:
       config.yml: |
-        externalConfig: https://raw.githubusercontent.com/bastienwirtz/homer/main/public/assets/config.yml.dist
+        externalConfig: https://raw.githubusercontent.com/nkreadly07/rancher-homelab/main/homer/config.yaml
