@@ -89,7 +89,7 @@ services:
         logo: "assets/tools/zoneminder.png"
         subtitle: "Zoneminder system"
         tag: "kubernetes"
-        url: "zm.roonaldo.org/zm"
+        url: "https://zm.roonaldo.org/zm"
 
   #Home
   - name: "Home"
