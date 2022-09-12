@@ -89,7 +89,7 @@ services:
         logo: "assets/tools/zoneminder.png"
         subtitle: "Zoneminder system"
         tag: "kubernetes"
-        url: "http://pc.sandstorm.iot:8443/zm"
+        url: "https://pc.sandstorm.iot:8443/zm"
 
   #Home
   - name: "Home"
