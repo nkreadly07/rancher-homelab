@@ -86,7 +86,7 @@ services:
         tag: "kubernetes"
         url: "https://argocd.roonaldo.org/"
       - name: "InfluxDB"
-        logo: "assets/tools/Sample2.png"
+        logo: "assets/tools/influxdb.png"
         subtitle: "Argo-CD for Rancher Kubernetes"
         tag: "kubernetes"
         url: "https://argocd.roonaldo.org/"
