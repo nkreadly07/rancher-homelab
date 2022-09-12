@@ -89,7 +89,7 @@ services:
         logo: "assets/tools/zoneminder.png"
         subtitle: "Zoneminder system"
         tag: "kubernetes"
-        url: "https://zm.roonaldo.org/zm"
+        url: "http://pc.roonaldo.org:8443/zm"
 
   #Home
   - name: "Home"
@@ -140,6 +140,11 @@ services:
         subtitle: "Home Automations for the soul"
         tag: "home"
         url: "https://roonaldo.duckdns.org:8123/lovelace/home"
+      - name: "OctoPrint"
+        logo: "assets/tools/octoprint.png"
+        subtitle: "Home Automations for the soul"
+        tag: "home"
+        url: "http://octopi.sandstorm.iot/"
       # - name: "HomeAssistant"
       #   logo: "assets/tools/home-assistant.png"
       #   subtitle: "Sample"
