@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+  labels:
+    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/name: traefik-dashboard
+spec:
+  type: ClusterIP
+  ports:
+    - name: traefik
+      port: 9000
+      targetPort: traefik
+      protocol: TCP
+  selector:
+    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/name: traefik
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traefik
+  namespace: traefik
+  annotations:
+    # (Optional): Annotations for the Ingress Controller
+    # -- ingress class is needed when traefik is not the default
+    # kubernetes.io/ingress.class: traefik
+    # ---
+    # -- entrypoint and tls configurations
+    # traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    # traefik.ingress.kubernetes.io/router.tls: "true"
+    # ---
+    # -- optional middlewares
+    # traefik.ingress.kubernetes.io/router.middlewares:your-middleware@kubernetescrd
+    # ---
+spec:
+  rules:
+    - host: "traefik.roonaldo.org"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik-dashboard
+                port:
+                  number: 9000
+  # (Optional) TLS settings
+  tls:
+    - hosts:
+        - traefik.roonaldo.org # Your hostname
+      secretName: traefik-tls-secret # Your TLS Secret

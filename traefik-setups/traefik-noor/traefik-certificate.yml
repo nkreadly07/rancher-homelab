@@ -1,0 +1,37 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`traefik.roonaldo.org`)
+      priority: 10
+      services:
+        - name: traefik
+          port: 9000
+    - kind: Rule
+      match: Host(`traefik.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: traefik
+          port: 9000
+          scheme: h2c
+  tls:
+    secretName: traefik-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik
+  namespace: traefik
+spec:
+  secretName: traefik-tls-secret
+  issuerRef:
+    name: ssl-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - traefik.roonaldo.org

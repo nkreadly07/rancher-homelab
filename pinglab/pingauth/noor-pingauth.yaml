@@ -64,7 +64,7 @@ pingauthorizepap:
   container:
     resources:
       requests:
-        cpu: 0
+        cpu: 1
         memory: .75Gi
       limits:
         cpu: 2

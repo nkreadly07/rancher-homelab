@@ -34,30 +34,40 @@ additionalArguments:
 #  - --certificatesresolvers.generic.acme.dnschallenge.provider=generic
 #  - --certificatesresolvers.generic.acme.email=your-email@example.com
 #  - --certificatesresolvers.generic.acme.storage=/ssl-certs/acme-generic.json
+entryPoints:
+  influxdb:
+    address: ":8086"
+
+  traefik:
+    address: ":9000"
+
+  metrics:
+    address: ":9100"
 
 logs:
   # Configure log settings here...
   general:
-    level: DEBUG
+    level: ERROR
     filePath: "/var/log/traefik.log"
 
 ports:
   # Configure your entrypoints here...
-  ldap:
-    port: 1389
-    expose: true
-    exposedPort: 389
-    protocol: TCP
 
-  ldaps:
-    port: 1636
-    expose: true
-    exposedPort: 636
-    protocol: TCP
-    tls:
-      enabled: true
-      # (optional) Set a Default CertResolver
-      certResolver: cloudflare
+  # ldap:
+  #   port: 1389
+  #   expose: true
+  #   exposedPort: 389
+  #   protocol: TCP
+
+  # ldaps:
+  #   port: 1636
+  #   expose: true
+  #   exposedPort: 636
+  #   protocol: TCP
+  #   tls:
+  #     enabled: true
+  #     # (optional) Set a Default CertResolver
+  #     certResolver: cloudflare
   web:
     # (optional) Permanent Redirect to HTTPS
     redirectTo: websecure
@@ -98,7 +108,7 @@ env:
 # Disable Dashboard
 ingressRoute:
   dashboard:
-    enabled: true
+    enabled: false
 
 # Persistent Storage
 persistence:
@@ -135,3 +145,18 @@ ingressClass:
     # IP used for Kubernetes Ingress endpoints
     publishedService:
       enabled: false
+
+metrics:
+  enabled: true
+  # datadog:
+  #   address: 127.0.0.1:8125
+  # influxdb:
+  #   address: localhost:8089
+  #   protocol: udp
+  prometheus:
+    entryPoint: metrics
+  #  addRoutersLabels: true
+  # statsd:
+  #   address: localhost:8125
+# api:
+#   dashboard: true

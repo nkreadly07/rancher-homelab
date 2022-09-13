@@ -130,6 +130,14 @@ persistence:
     # -- Set to true to retain the PVC upon `helm uninstall`
     retain: true
     existingClaim: homer
+    mountPath: /www/assets/tools
+    accessMode: ReadWriteOnce
+    # -- The amount of storage that is requested for the persistent volume.
+    size: 5Gi
+    # -- Set to true to retain the PVC upon `helm uninstall`
+    retain: true
+    existingClaim: homerpng
+    
 
 # -- Used in conjunction with `controller.type: statefulset` to create individual disks for each instance.
 volumeClaimTemplates: []

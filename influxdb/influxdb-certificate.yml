@@ -1,0 +1,37 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: influxdb
+  namespace: influxdb
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`influxdb.roonaldo.org`)
+      priority: 10
+      services:
+        - name: influxdb
+          port: 8443
+    - kind: Rule
+      match: Host(`influxdb.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: influxdb
+          port: 8443
+          scheme: h2c
+  tls:
+    secretName: influxdb-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: influxdb
+  namespace: influxdb
+spec:
+  secretName: influxdb-tls-secret
+  issuerRef:
+    name: ssl-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - influxdb.roonaldo.org

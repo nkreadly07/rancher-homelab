@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: influxdb
+  namespace: influxdb
+  annotations:
+    # (Optional): Annotations for the Ingress Controller
+    # -- ingress class is needed when traefik is not the default
+    # kubernetes.io/ingress.class: traefik
+    # ---
+    # -- entrypoint and tls configurations
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure, influxdb
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # ---
+    # -- optional middlewares
+    # traefik.ingress.kubernetes.io/router.middlewares:your-middleware@kubernetescrd
+    # ---
+spec:
+  rules:
+    - host: "influxdb.roonaldo.org"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: influxdb-influxdb2
+                port:
+                  number: 8086
+  # (Optional) TLS settings
+  tls:
+    - hosts:
+        - influxdb.roonaldo.org # Your hostname
+      secretName: influxdb-tls-secret # Your TLS Secret
+

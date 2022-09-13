@@ -1,0 +1,37 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+  namespace: prometheus
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`prometheus.roonaldo.org`)
+      priority: 10
+      services:
+        - name: prometheus
+          port: 80
+    - kind: Rule
+      match: Host(`prometheus.roonaldo.org`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: traefik
+          port: 80
+          scheme: h2c
+  tls:
+    secretName: prometheus-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prometheus
+  namespace: prometheus
+spec:
+  secretName: prometheus-tls-secret
+  issuerRef:
+    name: ssl-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - prometheus.roonaldo.org
