@@ -90,11 +90,43 @@ services:
         subtitle: "influxdb for Rancher Kubernetes"
         tag: "kubernetes"
         url: "http://pc.sandstorm.iot:8086/signin"
+
+  #Portainer services
+  - name: "Portainer"
+    icon: "fas fa-cloud"
+    logo: "assets/tools/portainer.png"
+    items:
+      - name: "Portainer"
+        logo: "assets/tools/portainer.png"
+        subtitle: "Portainer"
+        tag: "Portainer"
+        url: "https://pc.sandstorm.iot:9443/"
       - name: "Zoneminder"
         logo: "assets/tools/zoneminder.png"
         subtitle: "Zoneminder system"
-        tag: "kubernetes"
+        tag: "Portainer"
         url: "https://pc.sandstorm.iot:8443/zm"
+
+  #Ping services
+  - name: "Ping"
+    icon: "fas fa-cloud"
+    logo: "assets/tools/ping.png"
+    items:
+      - name: "PingDirectory"
+        logo: "assets/tools/ping.png"
+        subtitle: "Ping Directory LDAP"
+        tag: "Ping"
+        url: "https://pingds.ping.net:8443/console/login"
+      - name: "Ping Delegator"
+        logo: "assets/tools/ping.png"
+        subtitle: "Ping Delegator"
+        tag: "Ping"
+        url: "https://pingds.ping.net:8443/delegator"
+      - name: "Ping Federate"
+        logo: "assets/tools/ping.png"
+        subtitle: "Ping Federate"
+        tag: "Ping"
+        url: "https://pingfed.ping.net:9999/"
 
   #Home
   - name: "Home"

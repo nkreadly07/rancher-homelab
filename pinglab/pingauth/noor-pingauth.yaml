@@ -8,7 +8,7 @@ global:
     enabled: true
     addReleaseNameToHost: prefix
     defaultDomain: pd.roonaldo.org
-    defaultTlsSecret: pingauth-cert
+    defaultTlsSecret: pingauth-tls-secret
 
     annotations:
       traefik.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -27,6 +27,10 @@ pingauthorize:
       limits:
         cpu: 2
         memory: 4Gi
+    waitFor:
+      pingdirectory:
+        service: ldaps
+        timeoutSeconds: 300
 
   services:
     https:
