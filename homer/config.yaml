@@ -90,6 +90,11 @@ services:
         subtitle: "influxdb for Rancher Kubernetes"
         tag: "kubernetes"
         url: "http://pc.sandstorm.iot:8086/signin"
+      - name: "Grafana"
+        logo: "assets/tools/png/grafana.png"
+        subtitle: "grafana monitioring for Kubernetes"
+        tag: "kubernetes"
+        url: "https://grafana.roonaldo.org"
 
   #Portainer services
   - name: "Portainer"
