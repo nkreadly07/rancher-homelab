@@ -105,12 +105,12 @@ services:
         logo: "assets/tools/png/portainer.png"
         subtitle: "Blue Iris System"
         tag: "Portainer"
-        url: "https://blue.sanstorm.home:81/"
+        url: "http://blue.sanstorm.home:81/"
       - name: "Uptime Kuma"
         logo: "assets/tools/png/portainer.png"
         subtitle: "Uptime Kuma"
         tag: "Portainer"
-        url: "https://pc.sandstorm.iot:3001"
+        url: "http://pc.sandstorm.iot:3001/dashboard"
 
   #Ping services
   - name: "Ping"
