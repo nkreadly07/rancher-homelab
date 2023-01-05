@@ -383,7 +383,11 @@ service:
   # Additional annotations for UDP service only
   annotationsUDP: {}
   # Additional service labels (e.g. for filtering Service by custom labels)
-  labels: {}
+  labels:
+    - "traefik.http.routers.dashboard.rule=Host(`traefik.roonaldo.org`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+    - "traefik.http.routers.dashboard.service=api@internal"
+    - "traefik.http.routers.dashboard.middlewares=auth"
+    - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"    
   # Additional entries here will be added to the service spec.
   # Cannot contain type, selector or ports entries.
   spec: {}

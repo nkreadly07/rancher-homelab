@@ -1,0 +1,7 @@
+# values.yaml
+
+replicationFactor: 3
+zookeeper:
+  replicas: 3
+kafka:
+  replicas: 3

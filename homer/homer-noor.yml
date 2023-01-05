@@ -8,10 +8,14 @@ global:
   annotations:
     traefik.ingress.kubernetes.io/backend-protocol: "HTTPS"
     kubernetes.io/ingress.class: "traefik"
+  labels:
+    app.kubernetes.io/name: homer
 
 image:
   # -- image repository
   repository: b4bz/homer
+  labels:
+    app.kubernetes.io/name: homer
   # @default -- chart.appVersion
   tag:
   # -- image pull policy
@@ -127,17 +131,10 @@ persistence:
     accessMode: ReadWriteOnce
     # -- The amount of storage that is requested for the persistent volume.
     size: 1Gi
-    # -- Set to true to retain the PVC upon `helm uninstall`
-    retain: true
-    existingClaim: homer
-    mountPath: /www/assets/tools
-    accessMode: ReadWriteOnce
-    # -- The amount of storage that is requested for the persistent volume.
-    size: 5Gi
-    # -- Set to true to retain the PVC upon `helm uninstall`
-    retain: true
-    existingClaim: homerpng
+#      command: ["sh", "-c", "chmod -Rv 600 /ssl-certs/*"]
+
     
+# command: ["/usr/bin/chown -R lighttpd:lighttpd /www/assets/tools"]
 
 # -- Used in conjunction with `controller.type: statefulset` to create individual disks for each instance.
 volumeClaimTemplates: []
@@ -161,3 +158,4 @@ configmap:
     data:
       config.yml: |
         externalConfig: https://raw.githubusercontent.com/nkreadly07/rancher-homelab/main/homer/config.yaml
+

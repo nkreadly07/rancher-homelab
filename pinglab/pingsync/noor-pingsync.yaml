@@ -1,0 +1,126 @@
+#- PingDataSync will synchronize data from a source tree on a PingDirectory instance
+#- to a destination tree on the same PingDirectory instance.
+#- The entries from ou=source,o=sync to ou=destination,o=sync will be
+#- synchronized every second.
+#-
+#- The PingDataSync service includes 2 PingDataSync servers for failover.
+#- If one of the servers is stopped, another server will
+#- pick up the sync process where the original server left off.
+# hostNetwork: true
+global:
+  hostNetwork: true
+  license:
+    secret:
+      devOps: devops-secret
+
+  ingress:
+    enabled: true
+    addReleaseNameToHost: prefix
+    defaultDomain: pd.roonaldo.org
+    defaultTlsSecret: pingauth-tls-secret
+    annotations:
+      traefik.ingress.kubernetes.io/backend-protocol: HTTPS
+      # traefik.ingress.kubernetes.io/router.entrypoints: websecure,ldap,ldaps
+      kubernetes.io/ingress.class: "traefik"
+
+# pingdatasync:
+#   enabled: true
+#   envs:
+#     SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+#     SERVER_PROFILE_PATH: simple-sync/pingdatasync
+#     USER_BASE_DN: o=sync
+#   container:
+#     replicaCount: 2
+
+#   services:
+#     websecure:
+#       servicePort: 1443
+#       containerPort: 1443
+#       ingressPort: 443
+#       dataService: true
+
+pingdatasync:
+  enabled: true
+  envs:
+    SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+    SERVER_PROFILE_PATH: simple-sync/pingdatasync
+    USER_BASE_DN: o=sync
+  container:
+    replicaCount: 2
+
+  # workload:
+  #   type: StatefulSet
+
+  # container:
+  #   resources:
+  #     requests:
+  #       cpu: 2
+  #       memory: .75Gi
+  #     limits:
+  #       cpu: 2
+  #       memory: 2Gi
+
+  # services:
+  #   ldaps:
+  #     servicePort: 636
+  #     containerPort: 1636
+  #     clusterService: true
+  #   https:
+  #     servicePort: 443
+  #     containerPort: 1443
+  #     ingressPort: 443
+  #     dataService: true
+  #   clusterServiceName: pingdatasync-cluster
+
+pingdirectory:
+  enabled: true
+  envs:
+    SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+    SERVER_PROFILE_PATH: simple-sync/pingdirectory
+    USER_BASE_DN: o=sync
+
+  container:
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 50m
+        memory: 2Gi
+      limits:
+        cpu: 2
+        memory: 8Gi
+
+pingdataconsole:
+  enabled: true
+
+#############################################################
+# @param    pingfederate-engine PingFederate engine values
+#
+# @param    pingfederate-engine.enabled Enable PingFederate engine deployment
+# @default  false
+#############################################################
+pingfederate-admin:
+  enabled: true
+  envs:
+    SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+    SERVER_PROFILE_PATH: getting-started/pingfederate
+
+#############################################################
+# pingfederate-engine values
+#############################################################
+pingfederate-engine:
+  enabled: true
+  envs:
+    SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+    SERVER_PROFILE_PATH: getting-started/pingfederate
+
+pingdelegator:
+  enabled: true
+  name: pingdelegator
+  image:
+    name: pingdelegator
+
+pingdirectoryproxy:
+  enabled: true
+  name: pingdirectoryproxy
+  image:
+    name: pingdirectoryproxy

@@ -1,0 +1,103 @@
+global:
+  # hostNetwork: true
+  license:
+    secret:
+      devOps: devops-secret
+
+  ingress:
+    enabled: true
+    addReleaseNameToHost: prefix
+    defaultDomain: pd.roonaldo.org
+    defaultTlsSecret: pingauth-tls-secret
+    annotations:
+      traefik.ingress.kubernetes.io/backend-protocol: HTTPS
+      # traefik.ingress.kubernetes.io/router.entrypoints: websecure,ldap,ldaps
+      kubernetes.io/ingress.class: "traefik"
+
+pingdirectory:
+  enabled: true
+  envs:
+    SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+    SERVER_PROFILE_PATH: baseline/pingdirectory
+  container:
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 1
+        memory: 1.5Gi
+      limits:
+        cpu: 4
+        memory: 4Gi 
+    ldaps:
+      servicePort: 636
+      containerPort: 1636
+      clusterService: true
+    clusterServiceName: pingauthorize-cluster
+  
+  persistentvolume:
+    enabled: true
+    volumes:
+      out-pingauth-dir:
+        mountPath: /opt/out/
+        persistentVolumeClaim:
+          claimName: pdclaim
+          accessModes:
+            - ReadWriteOnce
+          storageClassName:
+          resources:
+            requests:
+              storage: 4Gi
+
+
+    probes:
+      livenessProbe:
+        exec:
+          command:
+            - /opt/liveness.sh
+        initialDelaySeconds: 100
+        periodSeconds: 30
+        timeoutSeconds: 120
+        successThreshold: 1
+        failureThreshold: 4
+      readinessProbe:
+        exec:
+          command:
+            - /opt/readiness.sh
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        timeoutSeconds: 120
+        successThreshold: 1
+        failureThreshold: 4
+      startupProbe:
+        exec:
+          command:
+            - /opt/liveness.sh
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 90
+
+        
+      # liveness:
+      #   command: /opt/liveness.sh
+      #   initialDelaySeconds: 300
+      #   periodSeconds: 30
+      #   timeoutSeconds: 30
+      #   successThreshold: 1
+      #   failureThreshold: 3
+
+      # readiness:
+      #   command: /opt/readiness.sh
+      #   initialDelaySeconds: 150
+      #   periodSeconds: 30
+      #   timeoutSeconds: 120
+      #   successThreshold: 2
+      #   failureThreshold: 2
+pingdataconsole:
+  enabled: true
+
+  services:
+    https:
+      servicePort: 8443
+      containerPort: 8443
+      ingressPort: 443
+      dataService: true

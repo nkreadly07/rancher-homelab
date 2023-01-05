@@ -1,0 +1,6 @@
+http:
+  routers:
+    Router-1:
+      # By default, routers listen to every entry points
+      rule: "Host(`example.com`)"
+      service: "service-1"

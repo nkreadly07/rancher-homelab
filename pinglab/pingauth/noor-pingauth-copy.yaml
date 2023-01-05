@@ -13,21 +13,6 @@ global:
     annotations:
       traefik.ingress.kubernetes.io/backend-protocol: "HTTPS"
       kubernetes.io/ingress.class: "traefik"
-
-  persistentvolume:
-    enabled: true
-    volumes:
-      out-pingauth-dir:
-        mountPath: /opt/pauth/
-        persistentVolumeClaim:
-          claimName: pauthclaim
-          accessModes:
-            - ReadWriteOnce
-          storageClassName:
-          resources:
-            requests:
-              storage: 4Gi
-
 pingauthorize:
   enabled: true
   name: pingauthorize
@@ -68,7 +53,12 @@ pingauthorize:
             backend:
               serviceName: https
 
-
+#############################################################
+# @param    pingauthorizepap PingAuthorizePAP values
+#
+# @param    pingauthorizepap.enabled Enable PingAuthorizePAP deployment
+# @default  false
+#############################################################
 pingauthorizepap:
   enabled: true
   name: pingauthorizepap
@@ -102,3 +92,50 @@ pingauthorizepap:
             pathType: Prefix
             backend:
               serviceName: https
+
+pingdirectory:
+  enabled: true
+  envs:
+    SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+    SERVER_PROFILE_PATH: baseline/pingdirectory
+  container:
+    replicaCount: 3
+    resources:
+      requests:
+        cpu: 1
+        memory: 1.5Gi
+      limits:
+        cpu: 4
+        memory: 4Gi 
+
+  persistentvolume:
+    enabled: true
+    volumes:
+      out-pingauth-dir:
+        mountPath: /opt/pauth/
+        persistentVolumeClaim:
+          claimName: pingauthorizeclaimname
+          accessModes:
+            - ReadWriteOnce
+          storageClassName:
+          resources:
+            requests:
+              storage: 4Gi
+
+      liveness:
+        command: /opt/liveness.sh
+        initialDelaySeconds: 1500
+        periodSeconds: 30
+        timeoutSeconds: 30
+        successThreshold: 1
+        failureThreshold: 3
+
+      readiness:
+        command: /opt/readiness.sh
+        initialDelaySeconds: 120
+        periodSeconds: 30
+        timeoutSeconds: 120
+        successThreshold: 2
+        failureThreshold: 2
+pingdataconsole:
+  enabled: true

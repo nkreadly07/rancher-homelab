@@ -35,19 +35,28 @@ additionalArguments:
 #  - --certificatesresolvers.generic.acme.email=your-email@example.com
 #  - --certificatesresolvers.generic.acme.storage=/ssl-certs/acme-generic.json
 entryPoints:
-  influxdb:
-    address: ":8086"
+  # influxdb:
+  #   address: ":8086"
 
-  traefik:
-    address: ":9000"
+  # traefik:
+  #   address: ":9000"
 
-  metrics:
-    address: ":9100"
+  # metrics:
+  #   address: ":9100"
+
+  # ldaps:
+  #   address: ":1636"
+
+  # ldap:
+  #   address: ":636"
+
+  # sync:
+  #   address: ":1443"
 
 logs:
   # Configure log settings here...
   general:
-    level: ERROR
+    level: error
     filePath: "/var/log/traefik.log"
 
 ports:
@@ -68,6 +77,7 @@ ports:
   #     enabled: true
   #     # (optional) Set a Default CertResolver
   #     certResolver: cloudflare
+
   web:
     # (optional) Permanent Redirect to HTTPS
     redirectTo: websecure
@@ -87,7 +97,11 @@ ports:
       #       - pingdirectory.roonaldo.org
       #       - nginx-test.roonaldo.org
       #       - traefik.roonaldo.org
-
+  sync:
+    port: 1443
+    # hostPort: 8000
+    expose: true
+    redirectTo: websecure
 env:
   # Set your environment variables here...
   #
@@ -135,7 +149,7 @@ ingressClass:
 
   kubernetesIngress:
     enabled: true
-    allowExternalNameServices: true
+    allowExternalNameServices: false
     allowEmptyServices: false
     # ingressClass: traefik-internal
     # labelSelector: environment=production,method=traefik
@@ -144,7 +158,7 @@ ingressClass:
       # - "default"
     # IP used for Kubernetes Ingress endpoints
     publishedService:
-      enabled: false
+      enabled: true
 
 metrics:
   enabled: true
@@ -160,3 +174,39 @@ metrics:
   #   address: localhost:8125
 # api:
 #   dashboard: true
+
+rbac:
+  enabled: true
+
+service:
+  enabled: true
+  type: LoadBalancer
+  # Additional annotations applied to both TCP and UDP services (e.g. for cloud provider specific config)
+  annotations: {}
+  # Additional annotations for TCP service only
+  annotationsTCP: {}
+  # Additional annotations for UDP service only
+  annotationsUDP: {}
+  # Additional service labels (e.g. for filtering Service by custom labels)
+  labels: {}
+  # Additional entries here will be added to the service spec.
+  # Cannot contain type, selector or ports entries.
+  spec:
+    {}
+    # externalTrafficPolicy: Cluster
+    # loadBalancerIP: "1.2.3.4"
+    # clusterIP: "2.3.4.5"
+  loadBalancerSourceRanges:
+    []
+    # - 192.168.0.1/32
+    # - 172.16.0.0/16
+  externalIPs:
+    []
+    # - 1.2.3.4
+  # One of SingleStack, PreferDualStack, or RequireDualStack.
+  # ipFamilyPolicy: SingleStack
+  # List of IP families (e.g. IPv4 and/or IPv6).
+  # ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services
+  # ipFamilies:
+  #   - IPv4
+  #   - IPv6
