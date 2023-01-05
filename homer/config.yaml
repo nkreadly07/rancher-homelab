@@ -105,7 +105,7 @@ services:
         logo: "assets/tools/png/portainer.png"
         subtitle: "Blue Iris System"
         tag: "Portainer"
-        url: "http://blue.sanstorm.home:81/"
+        url: "http://blue.sandstorm.home:81/"
       - name: "Uptime Kuma"
         logo: "assets/tools/png/portainer.png"
         subtitle: "Uptime Kuma"
