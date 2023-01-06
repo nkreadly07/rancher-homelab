@@ -94,7 +94,7 @@ services:
         logo: "assets/tools/png/grafana.png"
         subtitle: "grafana monitioring for Kubernetes"
         tag: "kubernetes"
-        url: "https://grafana.roonaldo.org"
+        url: "http://192.168.200.105:32000"
 
   #Portainer services
   - name: "Portainer"
